@@ -379,6 +379,32 @@
             50% { transform: scale(1.12); }
         }
 
+        /* --- Outside-the-book photo placeholders --- */
+        .outside-photo {
+            position: fixed;
+            width: 150px;
+            height: 170px;
+            object-fit: cover;
+            background: #fff;
+            border: 8px solid #fff;
+            border-radius: 3px;
+            box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .photo-one {
+            top: 5%;
+            left: 3%;
+            transform: rotate(-9deg);
+        }
+
+        .photo-two {
+            bottom: 5%;
+            right: 3%;
+            transform: rotate(8deg);
+        }
+
         .page-indicator {
             font-family: 'Lora', serif;
             font-size: 0.95rem;
@@ -430,6 +456,23 @@
                 bottom: 16px;
                 padding: 6px 18px;
                 font-size: 0.75rem;
+            }
+
+            .outside-photo {
+                width: 64px;
+                height: 74px;
+                border-width: 5px;
+                z-index: 1;
+            }
+
+            .photo-one {
+                top: 4px;
+                left: 4px;
+            }
+
+            .photo-two {
+                bottom: 4px;
+                right: 4px;
             }
 
             #diary-container {
@@ -634,6 +677,9 @@
             <button class="nav-btn" id="nextBtn" onclick="nextSpread()">Next →</button>
         </div>
     </div>
+
+    <img src="picture1.png" alt="Memory photo 1" class="outside-photo photo-one">
+    <img src="picture2.png" alt="Memory photo 2" class="outside-photo photo-two">
 
     <script>
         const spreads = [
