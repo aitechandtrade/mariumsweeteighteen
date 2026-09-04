@@ -1102,6 +1102,9 @@
             const btn = document.getElementById('musicToggle');
             if (!music || !btn) return;
 
+            // Speed up playback (1 = normal speed). Adjust this number to taste.
+            music.playbackRate = 1.25;
+
             const sync = () => {
                 if (music.paused) {
                     btn.textContent = '▶';
