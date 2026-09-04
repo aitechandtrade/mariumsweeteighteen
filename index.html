@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mariyam's 18th Birthday Diary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Dancing+Script:wght@700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cover-color: #FFB7CE; 
+            --spine-color: #e093ad;
+            --page-color: #ffffff;
+            --text-dark: #3a332f;
+            --text-light: #5c524c;
+            --accent: #f472b6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fce4ec;
+            background-image: 
+                radial-gradient(circle, rgba(255, 255, 255, 0.8) 2px, transparent 3px),
+                radial-gradient(circle, rgba(255, 182, 193, 0.4) 4px, transparent 5px),
+                linear-gradient(135deg, rgba(255,255,255,0.4) 25%, transparent 25%),
+                linear-gradient(225deg, rgba(255,255,255,0.4) 25%, transparent 25%);
+            background-size: 50px 50px, 80px 80px, 40px 40px, 40px 40px;
+            background-position: 0 0, 25px 25px, 0 0, 20px 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: var(--text-dark);
+        }
+
+        /* --- Cover Screen & Opening Animation --- */
+        #cover-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background: rgba(252, 228, 236, 0.6);
+            backdrop-filter: blur(4px);
+            cursor: pointer;
+            perspective: 1200px;
+        }
+
+        #cover-screen.opening {
+            animation: coverFlyOut 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+        }
+
+        @keyframes coverFlyOut {
+            0% {
+                opacity: 1;
+                transform: scale(1) rotateY(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.15) rotateY(-30deg) translateX(-100px);
+            }
+        }
+
+        .elegant-book-cover {
+            background-color: var(--cover-color);
+            width: min(380px, 88vw);
+            height: min(520px, 78vh);
+            border-radius: 4px 15px 15px 4px;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1) inset, 15px 25px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 2px solid #ea9cb6;
+            transform-origin: left center;
+            transition: transform 0.4s ease;
+        }
+
+        #cover-screen:hover .elegant-book-cover {
+            transform: scale(1.02) rotateY(-5deg);
+        }
+
+        .cover-doodle-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        .cake-ribbon-svg {
+            width: 70%;
+            height: 70%;
+            max-width: 280px;
+            max-height: 280px;
+        }
+
+        .book-binding {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 35px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 40%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0.1) 100%);
+            border-right: 2px groove #df8aa6;
+            z-index: 2;
+        }
+
+        .cover-content {
+            text-align: center;
+            padding: 20px;
+            margin-left: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+            width: 80%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 183, 206, 0.25);
+            z-index: 3;
+        }
+
+        .cover-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.1rem, 9vw, 3.5rem);
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            line-height: 1.1;
+            margin: 20px 0;
+        }
+
+        .cover-subtitle {
+            font-family: 'Lora', serif;
+            font-size: clamp(0.8rem, 3vw, 0.95rem);
+            color: #fff0f5;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .floral-accent {
+            color: #ffffff;
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+        }
+
+        .open-prompt {
+            position: absolute;
+            bottom: 30px;
+            background: rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 8px 25px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            border-radius: 20px;
+        }
+
+        /* --- Open Diary Layout & Entry Animation --- */
+        #diary-container {
+            display: none;
+            width: 95%;
+            max-width: 1000px;
+            height: 85vh;
+            background: var(--page-color);
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            position: relative;
+            flex-direction: column;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        #diary-container.visible {
+            display: flex;
+            animation: diaryScaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes diaryScaleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.92) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .leather-spine {
+            position: absolute;
+            left: 50%;
+            top: -5px;
+            bottom: -5px;
+            width: 4px;
+            background: #e5dccf;
+            transform: translateX(-50%);
+            box-shadow: -2px 0 5px rgba(0,0,0,0.05), 2px 0 5px rgba(0,0,0,0.05);
+            z-index: 5;
+        }
+
+        .bookmark-ribbon {
+            position: absolute;
+            left: 52%;
+            top: -15px;
+            width: 15px;
+            height: 120px;
+            background-color: var(--accent);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+            z-index: 4;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .book-spread {
+            display: flex;
+            height: calc(100% - 60px);
+            width: 100%;
+        }
+
+        .page {
+            flex: 1;
+            padding: 50px 60px;
+            overflow-y: auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background-color: #fcf8f2;
+        }
+
+        .left-page {
+            border-right: 1px solid #f0e6dc;
+            background: linear-gradient(to right, #ffffff 90%, #fcf8f5 100%);
+        }
+
+        .right-page {
+            background: linear-gradient(to left, #ffffff 90%, #fcf8f5 100%);
+        }
+
+        /* Diary and Handwritten Font Settings */
+        .diary-handwritten {
+            font-family: 'Patrick Hand', cursive, sans-serif;
+            font-size: 1.15rem;
+            line-height: 1.8rem;
+            color: #2b2b2b;
+            letter-spacing: 0.02em;
+        }
+
+        .page-doodle {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.22;
+            z-index: 1;
+        }
+        .page-doodle.flower { bottom: 25px; right: 25px; width: 50px; height: 50px; }
+        .page-doodle.heart { top: 25px; right: 25px; width: 35px; height: 35px; }
+        .page-doodle.stars { bottom: 25px; left: 30px; width: 45px; height: 30px; }
+        .page-doodle.sparkle { top: 25px; left: 30px; width: 35px; height: 35px; }
+
+        .letter-content-wrap {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .letter-content-wrap::-webkit-scrollbar { width: 4px; }
+        .letter-content-wrap::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+
+        .centered-title {
+            text-align: center;
+            width: 100%;
+            display: block;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            border-bottom: 1px solid #f0e6dc;
+            padding-bottom: 10px;
+        }
+
+        .letter-text {
+            white-space: pre-line;
+            margin-bottom: 25px;
+        }
+
+        /* The letters use <br><br> to separate paragraphs, which renders as a
+           full blank line (very loose). Turn the second <br> of each pair into
+           a small controlled block gap instead, so paragraph spacing is tighter
+           and consistent. */
+        .diary-handwritten br + br {
+            content: "";
+            display: block;
+            margin-top: 0.55em;
+        }
+
+        /* --- Navigation Footer --- */
+        .diary-footer {
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            background: transparent;
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid #e0d5c8;
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .page-indicator {
+            font-family: 'Lora', serif;
+            font-size: 0.95rem;
+            font-style: italic;
+            color: #9c8e83;
+        }
+
+        /* --- Responsive: tablets & small laptops --- */
+        @media (max-width: 900px) {
+            #diary-container {
+                width: 96%;
+                height: 90vh;
+            }
+
+            .page {
+                padding: 36px 30px;
+            }
+
+            .centered-title {
+                font-size: 1.8rem;
+            }
+
+            .diary-handwritten {
+                font-size: 1.05rem;
+                line-height: 1.65rem;
+            }
+
+            .diary-footer {
+                padding: 0 20px;
+            }
+        }
+
+        /* --- Responsive: phones --- */
+        @media (max-width: 640px) {
+            body {
+                overflow-y: auto;
+                padding: 12px 0;
+                min-height: 100vh;
+                height: auto;
+            }
+
+            .cover-content {
+                width: 92%;
+                padding: 14px;
+                margin-left: 10px;
+            }
+
+            .open-prompt {
+                bottom: 16px;
+                padding: 6px 18px;
+                font-size: 0.75rem;
+            }
+
+            #diary-container {
+                width: 100%;
+                max-width: 100%;
+                height: 92vh;
+                height: 92dvh;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 18px 34px rgba(0,0,0,0.22);
+            }
+
+            .leather-spine,
+            .bookmark-ribbon {
+                display: none;
+            }
+
+            /* Mini bookmark tab standing in for the spine on single-page view */
+            .mobile-bookmark {
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 24px;
+                height: 40px;
+                background: var(--accent);
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
+                box-shadow: 0 2px 5px rgba(0,0,0,0.18);
+                z-index: 6;
+            }
+
+            /* Single visible page, diary paper texture, deckled inner border */
+            .book-spread {
+                flex-direction: row;
+                height: calc(100% - 56px);
+                overflow: hidden;
+                position: relative;
+            }
+
+            .page {
+                flex: none;
+                width: 100%;
+                height: 100%;
+                padding: 34px 22px 26px;
+                overflow-y: auto;
+                background-color: #fffdf8;
+                background-image:
+                    repeating-linear-gradient(to bottom, transparent 0px, transparent 29px, rgba(176,137,104,0.10) 30px),
+                    radial-gradient(circle, rgba(176,137,104,0.10) 1px, transparent 1.5px);
+                background-size: 100% 30px, 18px 18px;
+                box-shadow: inset 0 0 0 1px rgba(224,213,200,0.7);
+            }
+
+            .right-page {
+                display: none;
+            }
+
+            .left-page {
+                border-right: none;
+                background-color: #fffdf8;
+            }
+
+            /* Folded-corner detail, bottom-right, for a page feel */
+            .page::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 30px;
+                height: 30px;
+                background: linear-gradient(135deg, transparent 50%, #f3e6d8 50%);
+                box-shadow: -1px -1px 3px rgba(0,0,0,0.12);
+                pointer-events: none;
+                z-index: 1;
+            }
+
+            .letter-content-wrap {
+                overflow-y: visible;
+                height: auto;
+            }
+
+            .centered-title {
+                font-size: 1.6rem;
+                margin-top: 6px;
+                margin-bottom: 10px;
+                padding-bottom: 10px;
+            }
+
+            .diary-handwritten {
+                font-size: 1.02rem;
+                line-height: 1.6rem;
+            }
+
+            .diary-handwritten br + br {
+                margin-top: 0.4em;
+            }
+
+            .page-doodle {
+                opacity: 0.18;
+                transform: scale(0.75);
+            }
+
+            .diary-footer {
+                height: 56px;
+                padding: 0 16px;
+                border-top: 1px solid #f0e6dc;
+            }
+
+            .nav-btn {
+                padding: 7px 16px;
+                font-size: 0.78rem;
+            }
+
+            .page-indicator {
+                font-size: 0.78rem;
+            }
+
+            /* Page-turn transition */
+            @keyframes pageOutToLeft {
+                to { transform: translateX(-6%); opacity: 0; }
+            }
+            @keyframes pageOutToRight {
+                to { transform: translateX(6%); opacity: 0; }
+            }
+            @keyframes pageInFromRight {
+                from { transform: translateX(6%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes pageInFromLeft {
+                from { transform: translateX(-6%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+
+            .page-turn-out-left { animation: pageOutToLeft 0.2s ease forwards; }
+            .page-turn-out-right { animation: pageOutToRight 0.2s ease forwards; }
+            .page-turn-in-right { animation: pageInFromRight 0.28s ease forwards; }
+            .page-turn-in-left { animation: pageInFromLeft 0.28s ease forwards; }
+        }
+
+        @media (min-width: 641px) {
+            .mobile-bookmark {
+                display: none;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .cover-title {
+                font-size: 1.9rem;
+            }
+
+            .nav-btn {
+                padding: 6px 12px;
+                font-size: 0.72rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cover-screen" onclick="openDiary()">
+        <div class="elegant-book-cover">
+            <div class="book-binding"></div>
+            <div class="cover-doodle-bg">
+                <svg viewBox="0 0 200 200" class="cake-ribbon-svg">
+                    <path d="M100,25 C80,5 60,25 80,45 C95,55 100,45 100,45" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M100,25 C120,5 140,25 120,45 C105,55 100,45 100,45" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="100" cy="45" r="5" fill="rgba(255,255,255,0.7)"/>
+                    <line x1="100" y1="52" x2="100" y2="65" stroke="rgba(255,255,255,0.8)" stroke-width="2"/>
+                    <ellipse cx="100" cy="52" rx="2" ry="1" fill="#fff"/>
+                    <path d="M 75,65 Q 100,60 125,65 L 125,85 Q 100,90 75,85 Z" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+                    <path d="M 65,85 Q 100,80 135,85 L 135,110 Q 100,115 65,110 Z" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+                    <path d="M 50,110 Q 100,105 150,110 L 150,145 Q 100,152 50,145 Z" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+                </svg>
+            </div>
+            <div class="cover-content">
+                <div class="floral-accent top-floral">❀ ✿ ❀</div>
+                <h1 class="cover-title">Mariyam's<br>18th Birthday</h1>
+                <p class="cover-subtitle">A collection of memories, love, and chaos.</p>
+                <div class="floral-accent bottom-floral">❀ ✿ ❀</div>
+            </div>
+            <div class="open-prompt">Click anywhere to open ✧</div>
+        </div>
+    </div>
+
+    <div id="diary-container">
+        <div class="leather-spine" id="leatherSpine"></div>
+        <div class="bookmark-ribbon"></div>
+        <div class="mobile-bookmark"></div>
+
+        <div class="book-spread">
+            <div class="page left-page" id="leftPageContent"></div>
+            <div class="page right-page" id="rightPageContent"></div>
+        </div>
+
+        <div class="diary-footer">
+            <button class="nav-btn" id="prevBtn" onclick="prevSpread()" disabled>← Previous</button>
+            <div class="page-indicator" id="pageIndicator">Spread 1 of 1</div>
+            <button class="nav-btn" id="nextBtn" onclick="nextSpread()">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        const spreads = [
+            {
+                left: `
+                    <svg class="page-doodle flower" viewBox="0 0 50 50"><path d="M25,10 Q30,20 40,25 Q30,30 25,40 Q20,30 10,25 Q20,20 25,10 Z" fill="#b08968"/></svg>
+                    <svg class="page-doodle heart" viewBox="0 0 50 50"><path d="M25,40 C25,40 10,25 10,15 C10,8 16,5 22,10 C25,13 25,13 28,10 C34,5 40,8 40,15 C40,25 25,40 25,40 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">1. Muzmmail</h2>
+                        <p class="letter-text diary-handwritten">HALOOOO MARI,<br>
+                        First of all happy birthday dude you're 18 now dude like holy congrats on surviving so long, nah but actually I'm proud of you for staying strong and optimistic and I love that about u. It feels surreal to be with you dude if we could go back in time and tell the muz who just met you that id have you as my partner I'm 100 percent he'd think it's a lie or be baffled to the point he can't think and now I can't imagine life without you, everytime I get text you or just talk to u even if it's random stuff or anything deep I always feel a rush of energy as if I belong with you, you never make me feel like I'm not enough nor do I feel like I have to be someone else with u I can breathe in my own skin.<br>
+                        I always found you wonderful dude since we met you were bubbly and cheerful and honestly just a fun person to be around and now it's been like 2.5 years since we've known each other? Like damn dude (you're stuck with me forever btw) I always imagined having a lover would be like a second self, someone who just gets you in a way no one else does and I can confidently say it's you, I am terrible at remembering things but with you it's like second nature I want to know everything about you and everything related to you and whatever little thing I walk I get reminded of you.<br>
+                        Be it anything gacha related, anything dystopian or just books and I feel so so so grateful to be able to feel this way about you when for a time I'd thought I wouldn't and then u came along and my soul went "oh there u are, I've been looking for you"</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle stars" viewBox="0 0 50 50"><polygon points="25,5 30,18 45,18 32,26 37,40 25,30 13,40 18,26 5,18 20,18" fill="#b08968"/></svg>
+                    <svg class="page-doodle sparkle" viewBox="0 0 50 50"><path d="M25,5 L28,20 L43,25 L28,30 L25,45 L22,30 L7,25 L22,20 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">1. Muzmmail</h2>
+                        <p class="letter-text diary-handwritten">Ok that enough of being cheesy and corny but fr dude happy birthday, ik these past few months haven't been the kindest but they weren't all that bad, you're starting a new chapter of your life, you'll meet new people, have new experiences, find your new favourites, your new dislikes all the while enjoying yourself. I pray the coming years are kinder to my sweet girl but then again you may face more hard trials but then again you have us and you're never alone and u do matter.<br>
+                        I rlly hope the surprise im planning for u works out I REALLY HOPE IT DOES, alas mariyam I wish you a happy birthday and just know I'll always be there for u and when I'm not ill always be admiring you from afar.<br>
+                        I love everything about you be it your flaws, your emotions, your passion for writing, your hobbies.<br>
+                        I'll choose you always<br>
+                        Over and over again<br>
+                        Without a pause<br>
+                        Without a doubt<br>
+                        In a heartbeat<br>
+                        You're the only one I want<br>
+                        and once again HAPPY BIRTHDAYYYYY<br><br>
+                        I love you mayo,<br>
+                        Your sweet muz</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle heart" viewBox="0 0 50 50"><path d="M25,40 C25,40 10,25 10,15 C10,8 16,5 22,10 C25,13 25,13 28,10 C34,5 40,8 40,15 C40,25 25,40 25,40 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">2. Abiha</h2>
+                        <p class="letter-text diary-handwritten">Dear Mari,<br><br>
+                        HAPPY 18TH BIRTHDAY LOVE!!! I cannot believe that you're this old, wow. I've seen you grow up. I remember being kids, talking 'bout random shit and laughing 'bout it, now we've all grown up. I still remember when we met because of Sybil during the end of Grade 8, that was so peak.<br><br>
+                        I hope 18 treats you well and that college doesn't give you the worst time. I'm sorry I wasn't able to come there, but I promise you'll make amazing friends there, and if you won't, you'll always have us. Even if we're far, we'll always have your back.</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle flower" viewBox="0 0 50 50"><path d="M25,10 Q30,20 40,25 Q30,30 25,40 Q20,30 10,25 Q20,20 25,10 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">2. Abiha</h2>
+                        <p class="letter-text diary-handwritten">Here's a lil song that reminds me of you:<br>
+                        "There is nothing I can say<br>
+                        There is nothing to do, let me fall in love with you<br>
+                        There is nothing to say, I don't want to talk<br>
+                        Just let it all go home<br>
+                        I'm almost eighteen anyways<br>
+                        And if you wanna, we could just go away<br>
+                        I won't be scared as long as I'm with you<br>
+                        When I'm with you, there is nothing I can't do"<br>
+                        -Eighteen by Lovespells<br><br>
+                        Make sure to get your driver's licence soon so we can go to all the fun spots near your house and have unlimited meetups and sleepovers (just an excuse to touch you, I fear). Oooo and I'll make some brownies for you soonn hehe.<br><br>
+                        I hope you know I'll always be there for you and that I miss you so very much, grandma :) (jkjk)<br><br>
+                        Hope to meet you soon<br>
+                        xx<br>
+                        Abiha</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle sparkle" viewBox="0 0 50 50"><path d="M25,5 L28,20 L43,25 L28,30 L25,45 L22,30 L7,25 L22,20 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">3. Yumna</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 1.05rem;">Heyy Mari, my sweet darling best friend, hope you are well and happy since yk it's your birthday 🎈<br>
+                        It's been 5 years since we have been bsfs now meaning I saw u growup in those past years 🥹 technically only ur age increased, height wise u r still small- small but cute yk😂😂<br>
+                        Anyways firstly I want to apologize for being a shitty friend ever since June, I have barley been present or helped u feel better after the incidents that happened in ur life. Khir today's letter isn't about that, it's about ur special day, I just wanted to say sorry and tell you n promise u that I'll be better 💪🏻 I'll be present more n listen to ur lovely entertaining fun awesome yaps and play roblox with you cuz genuinely I miss it all 😕<br>
+                        You are a legit blessing, a dua come true, who knew I would make such a fabulous friend with the best artistic and writing skills cuz damn girl u r mad talented, you never fail to impress me or anyone around u.<br>
+                        Not only that but u r so friken pretty!!?? Have u seen ur smile?? I'd go to war for you 💥 and bro when u dress up n post RAHHH I GET A HEART ATTACK CUZ HOLY OML U R HOT 🔥 SO HOT ⭐</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle stars" viewBox="0 0 50 50"><polygon points="25,5 30,18 45,18 32,26 37,40 25,30 13,40 18,26 5,18 20,18" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">3. Yumna</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 1.05rem;">The color pink 🩷 remind me of u legit and ur eye OML UR EYES 🥹 they are my fav shade of brown.<br>
+                        I will always love how are friendship started 🥤cuz of a BLUE slushi and a throw ball match 🏐 literally so glad I went to Alpha college cuz it gave me u, who cares if roots lost (roots itself is a friken loser) I no joke treasure u alot. U are like a sister to me. My partner in crime 🔪 my maid of honor 😋 my everything my oxygen 🤍 my love 😘 my first ever best friend 😍 my lady 👑 my lil (no literally u r lil cuz u r short) cutie pie 🥧<br>
+                        I love how much we match and vibe with eachother, I love how freaky we get, I love us I love everything about us 🫶🏻 I love when we play mimic or another game in roblox, I love when u yap about books, I love when u yap about mysha(ifykyk) cuz it makes u so happy so it makes me happy and I'm glad y'all met cuz now my bsf has somone who will love her like how she loves others cuz truly she deserves the best 🥹<br>
+                        You literally do so much for us like damm lady, you deserve so much more than this letter, this was so chaotic btw cuz msging people n all😭 like teach me ur ways how do u get people to cooperate, this wouldnt have possible without mysha and abiha anyways man ilysm can't believe my baby is now a pedo 💔 a granny with even worse goldfish memory 🧓🏻🐠</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle heart" viewBox="0 0 50 50"><path d="M25,40 C25,40 10,25 10,15 C10,8 16,5 22,10 C25,13 25,13 28,10 C34,5 40,8 40,15 C40,25 25,40 25,40 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">3. Yumna</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 1.02rem;">Even though u r a dadi now always stay jolly and happy.<br>
+                        Always be blessed by Allah ⭐ May all your dreams come true Ameen. Cakes and candles my love 🕯️<br>
+                        I want to write sm more but I'm already exceeding the word limit LIKE CRAZYYY 🤯🤯 so this is like a summarized version but gosh lady u r the best there is. You are legit priceless. I love ya my best friend!<br>
+                        Thanks for always being there for me and bearing with me and just being a good person with the purest heart. Thanks for believing in me and helping me move forward. Means alot.<br>
+                        Also I will genuinely slime some people in ur life and like help u make better frnds who will give u the importance u deserve cuz anit no way they get to make u cry, the only time u can cry is if it's tears of joy otherwise hell no, I want u to always stay happy n smile InshAllah.<br>
+                        No joke I would have had a conversation with them but I know it would have caused u trouble so I stayed away 😑 BUT ANYWAYS LEAVE THEM!<br>
+                        DON'T GET UPSET PLS WHEN IT COMES TO THEM JUST REMEMBER THE GOOD TIMES AND MOVE AGAY, ULL MAKE NEW FRNDS U HAVE UR WHOLE LIFE N ME THERE WITH U IN EVERY STEP ALONG THE WAY, I'll clap so loud for u, u won't notice if others done, I'll make sure u r jolly and remain the ray of sunshine 🔆 u r cuz damn man u r too precious 💞 and I'll always help u stay afloat n incase life gets shitty again I'll help u get up.<br>
+                        U r clumsy so I have to help u get up time to time either ways LMAO now I srsly need to stop adding on to stuff in this letter I'ma get killed by Abdullah.<br>
+                        Also I love it when u get ragebaited n it's so fun to harras u LOL I'ma pay people in college to ragebait u for me (obvi in a fun manner) really wish we both were together in college or atleast n bahria but khair maybe in a another I'll be ur girl and we will be together 💔🤧<br>
+                        And I just want to end this letter with "I'm so proud of you for everything you have done in life whether it's being a good person even after so many hardships or if it's studying or if it's arts, I'm proud of u and will always be 🎊"<br>
+                        -Ur Yumi 🎀</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle flower" viewBox="0 0 50 50"><path d="M25,10 Q30,20 40,25 Q30,30 25,40 Q20,30 10,25 Q20,20 25,10 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">4. Muntaha</h2>
+                        <p class="letter-text diary-handwritten">dear mariyam,<br>
+                        18 already? Drake 2.0 (that’s a compliment because Drake is da fucking goat oops sorry for cussing mbmb thori excited hogayi) I love the way you spill tea so randomly it lit brings joy into my lil life and ouu shi when u post yourself on your close friends story.. holy shi. u da real Juliette (i could be your Aaron yk just sayin ok bye.) keep posting and keep making daddy happy (daddy is me btw and u can call me mommy too cause no matter how much of an unc u get you’re still be my son) you’re so adorbs, babe, you lit take the cake for being hot and cute at the same damn time (elite ref) I love how we randomly got so close idek how many years I’ve known u since but I rmr u twirling around in the corridors of the hell hole itself aka roots millennium school 😓😓 but yeah i rmr thinking she’s so short wdym she’s older than me and I swear I don’t think you’ve grown an inch since that day but wtv ur cute so it balances out and poof randomly you dissapeared and yeah idk where u went now ik and holy trauma u got but its ok cause main characters have the most trauma (u da real Juliette (2)) ANYWYAS holy yap bruv hope u have a great one, and rmr you’ll always be my son forever 💕<br><br>
+                        Love, forever<br>
+                        Muntaha aka mommy and daddy both<br><br>
+                        Hope you are enjoying your special 18th day to the absolute fullest! Keep being the sunshine, the chaotic energy, and the best "son" anyone could ever ask for. Stay amazing, stay short, and keep serving us those iconic close friends stories.<br><br>
+                        Love you lots,<br>
+                        Muntaha</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle stars" viewBox="0 0 50 50"><polygon points="25,5 30,18 45,18 32,26 37,40 25,30 13,40 18,26 5,18 20,18" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">5. Zainab</h2>
+                        <p class="letter-text diary-handwritten">HAPPY BIRTHDAYYYY 😭💗<br>
+                        Okay first of all, congratulations on surviving another year of being you. Honestly, impressive. I genuinely don’t know how you manage to be the sweetest person ever 😭 you’re one of those people who somehow makes conversations 10x more fun just by existing. You’re so easy to talk to, and I love how your brain works because we can talk about literally whatever comfortably.<br><br>
+                        You’re actually so beautiful, like ohmigad I'm on my kneessss. You have this way of making people feel understood and comfortable, and that’s genuinely such a rare quality.<br><br>
+                        Also, since it’s your birthday, I am obligated to remind you that you are getting OLDER, your knees will squeak, and don't fall down the stairs please granny💔 Please use this new age wisely. Actually never mind, you are already perfect babes.<br>
+                        I hope this year gives you SO many good memories, And PLEASE don’t forget that you deserve the best things. Anyway, I hope your birthday is as amazing, and wonderful as you are. I’m very grateful for you and I hope we make more memories together.<br><br>
+                        HAPPY BIRTHDAY AGAINNNN 💓💓<br>
+                        Now go enjoy your day before I start getting emotional and ruin my reputation</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle sparkle" viewBox="0 0 50 50"><path d="M25,5 L28,20 L43,25 L28,30 L25,45 L22,30 L7,25 L22,20 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">6. Nadia</h2>
+                        <p class="letter-text diary-handwritten">To my awesome friend, Mariyam,<br><br>
+                        It’s insane that you’re turning 18. It feels like it was just yesterday that we were back in Roots, with you plagiarising my work, beating me up, and stealing my fries at break time (whilst somehow never letting me take your food). Now that I'm thinking about it, those times were definitely the happiest I've ever been.<br><br>
+                        I know we don’t talk a lot, but I want you to know that I care about you so much, and I genuinely wish I could be there for your special day. I’m so happy that you have such loving friends who are doing this for you, because you truly deserve to feel celebrated and appreciated.<br><br>
+                        You’re genuinely one of the brightest people I know, so it doesn’t surprise me that so many people care about you and want to make your 18th special.<br><br>
+                        I hope this new chapter of your life brings you everything you’ve been hoping for. You deserve the very best in life, and I hope you never forget how loved and valued you are by the people around you. I’m so proud of the person you’ve become, and I can’t wait to see all the amazing things you accomplish.<br><br>
+                        Happy 18th, Mariyam! I hope you have the most amazing birthday and make so many more memories you can laugh about. And please, for once, share your food.<br><br>
+                        Love you always ❤️<br>
+                        Nadia</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle heart" viewBox="0 0 50 50"><path d="M25,40 C25,40 10,25 10,15 C10,8 16,5 22,10 C25,13 25,13 28,10 C34,5 40,8 40,15 C40,25 25,40 25,40 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">7. Pari</h2>
+                        <p class="letter-text diary-handwritten">To my dearest friend, Mariyam.<br><br>
+                        You're probably one of the few people I could call my friend and truly mean it. We've known each other for a long time and though we rarely talk now I still think of you fondly since you know how to leave a lasting impression on others. I doubt I'd ever meet anyone else like you and even now I feel like I choose my friends depending on what trait they share with you. Though you are older than me (old ahhh babushka), I feel like I see you as a little sister and often worry about you, which is why I often come off as judgemental towards your friends and other people you have unfortunately chosen to include as a part of your life, know that it all comes from a place of love, care and worry. Mostly just worry though.<br><br>
+                        Regardless of my personal opinions, you have found people that truly love you, almost as much as the love you give out to the word so please never change, stay awesome and know that I love ya.<br><br>
+                        Also would be real nice if you replied to the GC every once in a while instead of appearing, dropping a picture and disappearing everytime.<br><br>
+                        -Pariwash.</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle flower" viewBox="0 0 50 50"><path d="M25,10 Q30,20 40,25 Q30,30 25,40 Q20,30 10,25 Q20,20 25,10 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">8. Maha</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 0.98rem;">DEAR MARIYUM,<br>
+                        HAPPY BIRTHDAY OMG. I can't believe that you left school such a long time ago it's just like it was yesterday and I've skipped time to 2026 now and it's not 2021 anymore. I also cannot believe the fact that you're turning 18 omg wow, you have such a long journey ahead. A lot of things remind me of you even though I haven't seen you in such a long time irl. Sometimes it's the books that people read especially dork diaries, even when I look at my dork diary collection on my shelf which I bought because of you btw😭 I was inspired and alishba told me to read it because you especially loved them so muchhh, I remember you. Also gacha ahaha helpp😭😭😭.<br>
+                        It's so nice to see you live your life and bloom like a flower, I wish I joined the van for that 1 year so I could've been there with you and alishba more and we would have many more memories.<br>
+                        The only memories with you I have is us 3 me u and alishba playing with alishbas ducks and mini plushiesss also you used to bring them too. I just wish I could go back in time and relive those amazing moments with you ☹️. Van memories are literally the besttttt.<br>
+                        Me and alishba (ESPECIALLY ALISHBA) used to miss u sm and we used to be like "imagine if mariyum was here she would love this". We used to think about you in places you would think we're lowk stupid, mostly outside btown and in our van. I hope your spark never dies, you're honestly so pretty, you're so angelic and I can see the noor on your face. May Allah grant all your wishes and make them come true and may Allah make your future bright and successful.<br>
+                        Your happiness is my happiness and i hope you make it in life, if you ever need anything or anyone to talk to I'll always be there for you no matter what because I know you're there for me too when I need anyone to talk to.<br>
+                        You're truly the best I love you so sosososos much always take care of yourself<br>
+                        - xoxo maha</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle stars" viewBox="0 0 50 50"><polygon points="25,5 30,18 45,18 32,26 37,40 25,30 13,40 18,26 5,18 20,18" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">9. Zunair</h2>
+                        <p class="letter-text diary-handwritten">Mariyam, Amy, Miss Artist A VERY VERY VERY HAPPY BIRTHDAY TO THE PERSON WHO WAS ALIVE WHEN MEHMET FATEH WAS CONQUERING INSTANBUL 👵 🎂 🥳 🎉....hope you achieve all your goals and chase all your dreams In Sha Allah khush raho abaad raho also keep up that good spirit keep up that kind soul and never ever drop that positivity....<br><br>
+                        PLEASE release your book i wanna read about Zerelle and i wanna read the whole thing...anyways dont ever be down on anything you know your value we ALL know it...<br><br>
+                        channel that inner artist, keep shining like a star granny 🌟 so be happy this is your day this is the day of the soulful,kind,nice,cheerful,supportive and immaturely mature Mariyam so again a very very happy 18th !!!<br><br>
+                        -zunni</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle sparkle" viewBox="0 0 50 50"><path d="M25,5 L28,20 L43,25 L28,30 L25,45 L22,30 L7,25 L22,20 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">10. Shaail</h2>
+                        <p class="letter-text diary-handwritten">Halo Mariyam da great. Happy fuging birthday grandma. I cant believe your 18. Your old as fug. We've been friends for ig 2 years. ITS BEEN PEAKKK. My fav memory of us is probably the farewell. THE ONLY PICTURE WE HAVE TOGETHER WAS TAKEN IN DA FAREWELL. Pookified is so distanced now. Parhai made us alll far away from each other. However we're all still besties chat.Fuh bsf we bff🗣🔥🔥. Your da goat dont let anyone tell u that your booty cheeks or poopy. I mean you are poopy but the good one. The clean slippery poopy.<br><br>
+                        Your 18 your an adult man holy fug. Niggesh book where da book at ive been waiting. Ive lost hope for the book. Anyways your such a great writer keep writing and showing cuz i fw it. Also also W artist. No ones more creative then yo short ahh. Stay happy and stay short gang. HAHAHAHAH 5"1. Im joking your cool short but cool. DID YK YOUR SO SHORT THAT IF U CAME OUTSIDE OUR AND RANG OUR BELL ID THINK WE GOT DING DONG DITCHED. I joke stay cool stay Mari da great and stay old. Ill get u a walking stick. Happy 18th birthday Mariyam. 🎂 🔥<br><br>
+                        - shahil</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle heart" viewBox="0 0 50 50"><path d="M25,40 C25,40 10,25 10,15 C10,8 16,5 22,10 C25,13 25,13 28,10 C34,5 40,8 40,15 C40,25 25,40 25,40 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">11. Alishba</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 0.98rem;">Happy birthday, beautiful and my favorite senior! Today is your special day, and I hope it’s as wonderful as you are. I want you to know you’re cherished and loved so much and that you’ve added so much happiness to my life. May joy bloom in your heart forever. I hope you’re blessed with all the happiness in the world and you achieve all your goals. We’ve been friends for so long, and I’m so glad you came into my life! I’m glad fate put us into the same van and formed such an amazing friendship. Some friends feel like home, and you’re an example! Your presence made school so much better, and I’ll never forget how much fun we had in the van and when we’d meet up in the morning before our class started. You’re like a big sister to me, and I wouldn’t have it any other way. I’m grateful for you bearing my questionable past self and how weird I was.<br><br>
+                        You made me feel a sense of belonging, and I’m so grateful for that. No words will be able to describe how much our friendship means to me. Also, I’ll never forget your gacha obsession, hehe. Also, thank you so much for listening to all my rants! Incredibly grateful, hehe. You’re the prettiest girl! I’m lost in your eyes, and you have a beautiful soul. I used to think when the sun hovered over the sea and the water glistened—I thought it was the most beautiful until I noticed the sparkle in your eye while you laughed. I want to end this letter reminding you that you’re loved, seen, appreciated, and precious to me and so many other people. Love you, and happy birthday!<br><br>
+                         - Alishba</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle flower" viewBox="0 0 50 50"><path d="M25,10 Q30,20 40,25 Q30,30 25,40 Q20,30 10,25 Q20,20 25,10 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">12. Fatima</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 0.88rem;">DEAR MARYUM ❤️❤️❤️❤️❤️❤️❤️<br>
+                        Your genuinely one of the sweetest, funniest, kindest and cutest people I know. Your also a certified bookworm. If someone ever needs to find you, they should probably check the bookstore or look for the girl who is emotionally attached to a fictional character - JUST LIKE ME 😭<br>
+                        You have this special way of making happy just by being yourself. Your caring, thoughtful and always manage to things more fun. And being weird is honestly soo cool ✨ rather than being plain and normal 😭~ eww<br>
+                        I KNOW we haven't met in real life but its like I've known you cause you ARE SOOOOOOOOOO COOOOOOOL 😭<br>
+                        I'm really thankful to Yumna for introducing me you to me. She has such sweet friends YOUR NO.1 ❤️ ♡<br>
+                        No but seriously, your heavenly. Your like An ANGEL ♡ sent to bless us. And omg your smile 😭 OH MA GAHD Im so down bad 4 you. Like your so ethereal and Legit Gorgeous its Actually Unreal.<br>
+                        Honestly NEVER EVER stop being Goofy and weird because that's what makes YOU. Never change urself cz of others. Just be yourself by doing you can Accomplish so many things if you do what you love.<br><br>
+                        And if something bad happens don't lose Hope because Allah will guide you and show you the right path. Alot of bad things happened, lost the ones I Loved but I stay strong because they would wanna see me happy and so do WE, WE WANNA see U shining, see the Happiest MARYUM there is. ♡ bcz I only know 1 MARYUM and thats you<br>
+                        So A very HAPPIEST 18th BIRTHDAY MARYUM ♡ omg plz Adopt me once u turn 18. 😭<br>
+                        May this year bring you everything you deserve. Lots of HAPPINESS, UNFORGETTABLE MEMORIES, WONDERFUL PEOPLE AND MOST importantly AN INFINITE NO. OF BOOKS FOR YOU. ♡<br>
+                        I hope you keep being kind, funny, cute, and weird person because thats what make MARYUM SPECIAL. Hopefully we get to meet this year 😭 And I'ma take ugly pics of you 😭 hehehehehe Jk how can any1 take a ugly pic of An Angel ♡ ♡ Love you lots ♡<br>
+                        Also did know I was also a Gacha kid 😭 We have more in common than you think. YOU GOT PEAK TASTE AND PLEASE ALWAYS KEEP BEING WEIRD AND FUNNY ♡<br>
+                        Lots of LOVE ♡ Your friend FATIMA</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle stars" viewBox="0 0 50 50"><polygon points="25,5 30,18 45,18 32,26 37,40 25,30 13,40 18,26 5,18 20,18" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">13. Mayir</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 0.95rem;">"Yoo you draw very nice" I said when I first looked into an immaculate drawing on the desk belonging to a shy girl in a hijab I never before talked to properly. Atleast that is how I remember it as our first proper interaction. Who knew back then that we will grow into being bestest of friends. 3 years... That is how much we spent together. I really don't think I expressed it like this before but mariyam, I don't think I ever needed a person this much only after my daily life with them ended. I know I am a drag but bear with this letter for it is not just a wish, it's me thanking you, for simply being who you are.Mariyam, you have always been a kind helpful girl who always stays jolly and tries to participate with others and their favourite activities and I hope you know that there was not even a single day with you that I regretted being around you. Each single one is a memory now, but not distant. Looking back now, you were an addition of a person to my life which we both didn't expect but you quickly owned up to so many things of mine that I did not even realize and became so indebted to your kindness and efforts. (Oh shit bro this is emotional). I am so sorry I should have been kinder to you aswell but mariyam never think that I don't value you.</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle sparkle" viewBox="0 0 50 50"><path d="M25,5 L28,20 L43,25 L28,30 L25,45 L22,30 L7,25 L22,20 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">13. Mayir</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 0.95rem;">You are someone I have, will and am forever grateful for. From the first time you helped me complete my schoolwork when I was being lazy or you pushed me to do all those damn stupid activities which I ended up having fun in, thank you for helping me take the right decisions. You have all the right to complain that I was distant, I understand, but mariyam that was and still is one of the closest bonds I ever had and will ever have. Thank you for being so caring and always thinking for me and others. Be easy on yourself too mariyam if you feel like relying on someone do so and I apologize if I ever failed to do that for you. I know exactly how to express it all... Concisely what I want to say is, Mariyam Adnan, thank you... For simply being the person you are.<br>
+                        Even if it was you who needed help at times you never hesitated to ask that "Mayir theek ho?" And I don't think I ever even needed to ask you for help you were always there before I even needed you.Almost like you are aware of my flaws and always there to help me out. Whether you instinctively bringing a pen for me having faith that I will lose mine or grabbing sheets for me knowing I will forget to get for myself. HAHA. I really did burden you alot didn't i? Thank you so much mariyam.</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle heart" viewBox="0 0 50 50"><path d="M25,40 C25,40 10,25 10,15 C10,8 16,5 22,10 C25,13 25,13 28,10 C34,5 40,8 40,15 C40,25 25,40 25,40 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">13. Mayir</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 0.95rem;">Just so you know I am aware of this all and I am grateful. I value you and your efforts both. There truly will be no other mariyam Adnan... Ever.<br>
+                        Mariyam... work on yourself okay? Do not get scared of people. Yes they are harsh but they are kind too. Beleive in yourself more you can do wonders. God you did things for me I did not even know were possible you can do a lot more for yourself. You are an amazing person mariyam. You cherish others but somewhere along the way you forgot how to cherish YOURSELF. The most important and closest person to mariyam Adnan IS MARIYAM ADNAN. So take care of Mariyam...<br>
+                        I know you get overwhelmed sometimes and it's okay to be but when you do, do not even think twice before sharing it with your friends. You helped me process my shit at times God forbid you switching places for once and letting me help you. Trust yourself mariyam. You are more than what you know.Thank you for listening mariyam, remember that we both will always remain the SMA the true shoe breakers, THE CLUMSY AND THE SLEEPYHEAD. THE DINO AND THE COW 🗣️🔥.<br>
+                        Take care of yourself mariyam, and never forget you are here for me, but I am here for you too...<br>
+                        Do not cry, okay? Happy Eighteenth birthday Mariyam... You are an oldie now, stay yourself. That's all I'll ask from you.<br>
+                        Thank you... for everything you've done. —mayir</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle flower" viewBox="0 0 50 50"><path d="M25,10 Q30,20 40,25 Q30,30 25,40 Q20,30 10,25 Q20,20 25,10 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">14. Dania</h2>
+                        <p class="letter-text diary-handwritten">HAPPY BIRTHDAY MOMMYY. You’re finally 18, you know what that means right ;) heh- I hope your day is perfect just like you. May this next year of your life bring you closer to achieving your dreams. I hope life keeps giving you reasons to smile cuz I really love your smile, it's literally the cutest thing ever.<br><br>
+                        I know it's kinda scary turning 18... You’re not an unc, you’re still my lil baby :3 Okay, why do I sound like a mom </3 I was trying to flirt. I know you’re smiling rn. See! You want me, I knew it. Hehehe-<br><br>
+                        okay, enough flirting, I hope you know how amazing of a friend you are. Even though we just met recently, you’re still important to me and I love talking to you. I'm grateful I met you. I hope our friendship grows stronger with time and we always stay friends. I’m gonna keep making you mad with my flirting and freakiness tho, you better be ready to deal with it. Anywayyy, I hope you have the best birthday ever, mommy :3<br><br>
+                        LOVE YOUU <33<br>
+                        Your wife,<br>
+                        Dania</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle stars" viewBox="0 0 50 50"><polygon points="25,5 30,18 45,18 32,26 37,40 25,30 13,40 18,26 5,18 20,18" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">15. Sindhu</h2>
+                        <p class="letter-text diary-handwritten">happiest birthday to my prettiest friend, you're the coolest person I've ever met, you're so funny, so kind and such an interesting person. We haven't spent a lot of time together but I remember how full of life you were in grade seven and every single time yumna talks about you she tells me how fun you still are so this surprises me even more that how are you still same after sm years you've kept the same energy. i still cant believe that youre 18 now broski you're lil so short like a little nugget lmao anyways keep being the way you aree im grateful to have u by my side and remember that even tho we don't talk a lot ill always be here for u tooo.<br><br>
+                        Last but not the leasstttt I Know how struggling life can be sometimes how hard it becomes to just survive so I'm extremely proud of you for being who you are for 18 continuous years thankyou for getting up from your bed every morning and not giving up.. jussstttt never give up and stop believing in every fake person you deserve way better girlie, I love you so so so much stay as you are and don't ever let people take the best of you... Abdullah is begging for his laptop hence this is it. love uuuuu byee happiest birthday ever love <3<br><br>
+                        Sindhu</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle sparkle" viewBox="0 0 50 50"><path d="M25,5 L28,20 L43,25 L28,30 L25,45 L22,30 L7,25 L22,20 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">16. Abdullah</h2>
+                        <p class="letter-text diary-handwritten">Happy birthday Mariam! 🎂 It was nice meeting you. We first met in grade 6 at Roots, and then I don't even remember that much. I just remember you used to be with Abiha at home time. You're very short I guess, so shorter than Abiha. No wait, Abiha is shorter than you. 🤷‍♂️ Anyways, um it was fun at MUNs and then also at Lal Qila. Well, happy birthday shorty! 🎉<br><br>
+                        -abdullah<br><br>
+                        Hope you have an amazing 18th birthday celebration! Remembering those grade 6 days at Roots, MUNs, and good times. Cheers to turning 18 and having a wonderful year ahead!</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle heart" viewBox="0 0 50 50"><path d="M25,40 C25,40 10,25 10,15 C10,8 16,5 22,10 C25,13 25,13 28,10 C34,5 40,8 40,15 C40,25 25,40 25,40 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">17. Minha</h2>
+                        <p class="letter-text diary-handwritten">Dearest Minha's note for Mariyam!<br>
+                        Happy 18th birthday to wonderful Mariyam! Wishing you all the happiness, joy, and success in this new chapter of your life. May your days be filled with wonderful books, great company, and endless reasons to smile.<br><br>
+                        Hope you have the best birthday ever and continue being the amazing, creative, and sweet person you are. Lots of love on your special day!<br><br>
+                        - Minha</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle flower" viewBox="0 0 50 50"><path d="M25,10 Q30,20 40,25 Q30,30 25,40 Q20,30 10,25 Q20,20 25,10 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">18. Amna</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 0.9rem;">Dear Mario,<br>
+                        HAPPPYYYYYY 18TH BIRTHDAYYYYY TO MY WHIMSICAL AHH HG!! I hope you're well aware about how a loveable and kind person like you deserves only the best. As you finally become legal, I wanna give you a few reminders in this letter that I hope you carry with you.<br>
+                        YOU decide what disturbs your peace — protect it, and your energy. Never let anyone walk over you for the sake of being nice to them, alright? Know it's okay to let people go — especially when helping them only drains you and if your help goes unappreciated. Energy is too expensive for bad investments, yeah? Don't beat yourself up over being sensitive or how you cry easily. Know that being soft hearted isn't a weakness; it's a reminder you can still feel and connect to human nature because when people become hard hearted just to avoid being sensitive and getting hurt, they lose the ability to cherish real love and care and I pray you never stoop to that level. Face your feelings because people who avoid them to pretend they're not hurt never heal or move on. Do NOT be one of them ma'am.<br>
+                        Please know I'm here if you ever need someone to take advice from or someone to just confide in. I'll always respond. Learn to see the good in every hardship life throws at you because all pain is temporary and life isn't about waiting for the storm to pass, it's about learning to dance in the rain.</p>
+                    </div>
+                `
+            },
+            {
+                left: `
+                    <svg class="page-doodle stars" viewBox="0 0 50 50"><polygon points="25,5 30,18 45,18 32,26 37,40 25,30 13,40 18,26 5,18 20,18" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">18. Amna</h2>
+                        <p class="letter-text diary-handwritten" style="font-size: 0.9rem;">If you stay upset about something out of your hands and tell yourself you'll be happy once everything is fine, you'll waste your whole life waiting.<br>
+                        As you grow, Form such a strong opinion of yourself that criticism from someone you'd never take advice from doesn't influence your self image negatively but learn to take accountability and change your ways when your loved ones confide in you about your actions hurting them because those people only want the best for you and want to see you succeed in life. Don't fall into a victim mentality, but don't become a people pleaser either. Just be unapologetically yourself, love deeply, and let others love you back. Thank you for being the sister my parents never gave me — I hope you have the best 18th birthday ever.<br><br>
+                        Your sticker collection funding hg,<br>
+                        Amna</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle sparkle" viewBox="0 0 50 50"><path d="M25,5 L28,20 L43,25 L28,30 L25,45 L22,30 L7,25 L22,20 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">✨ Fin ✨</h2>
+                        <p class="letter-text diary-handwritten centered-title" style="margin-top: 100px; font-size: 1.5rem; border: none;">Wishing you the happiest 18th birthday, Mariyam!<br><br>May your year be filled with love, laughter, and endless pages of wonderful memories. 💖</p>
+                    </div>
+                `
+            }
+        ];
+
+        let currentSpread = 0;
+        let currentPage = 0;
+        const flatPages = spreads.flatMap(s => [s.left, s.right]);
+
+        function isMobileView() {
+            return window.matchMedia('(max-width: 640px)').matches;
+        }
+
+        function resetScroll() {
+            const bookSpread = document.querySelector('.book-spread');
+            if (bookSpread) bookSpread.scrollTop = 0;
+            document.querySelectorAll('.page').forEach(page => page.scrollTop = 0);
+            document.querySelectorAll('.letter-content-wrap').forEach(wrap => wrap.scrollTop = 0);
+            const diaryContainer = document.getElementById('diary-container');
+            if (diaryContainer && diaryContainer.scrollIntoView) {
+                diaryContainer.scrollIntoView({ block: 'start', behavior: 'auto' });
+            }
+        }
+
+        function openDiary() {
+            const cover = document.getElementById('cover-screen');
+            const diary = document.getElementById('diary-container');
+
+            cover.classList.add('opening');
+            setTimeout(() => {
+                cover.style.display = 'none';
+                diary.classList.add('visible');
+                if (isMobileView()) {
+                    currentPage = 0;
+                    renderMobilePage();
+                } else {
+                    renderSpread();
+                }
+            }, 800);
+        }
+
+        function renderSpread() {
+            const spread = spreads[currentSpread];
+            document.getElementById('leftPageContent').innerHTML = spread.left;
+            document.getElementById('rightPageContent').innerHTML = spread.right;
+            document.getElementById('rightPageContent').style.display = '';
+            document.getElementById('pageIndicator').innerText = `Spread ${currentSpread + 1} of ${spreads.length}`;
+
+            document.getElementById('prevBtn').disabled = currentSpread === 0;
+            document.getElementById('nextBtn').disabled = currentSpread === spreads.length - 1;
+            resetScroll();
+        }
+
+        function renderMobilePage(direction) {
+            const leftEl = document.getElementById('leftPageContent');
+            document.getElementById('rightPageContent').style.display = 'none';
+
+            const applyContent = () => {
+                leftEl.innerHTML = flatPages[currentPage];
+                document.getElementById('pageIndicator').innerText = `Page ${currentPage + 1} of ${flatPages.length}`;
+                document.getElementById('prevBtn').disabled = currentPage === 0;
+                document.getElementById('nextBtn').disabled = currentPage === flatPages.length - 1;
+                resetScroll();
+            };
+
+            if (!direction) {
+                applyContent();
+                return;
+            }
+
+            leftEl.classList.remove('page-turn-in-left', 'page-turn-in-right');
+            leftEl.classList.add(direction === 'next' ? 'page-turn-out-left' : 'page-turn-out-right');
+
+            setTimeout(() => {
+                applyContent();
+                leftEl.classList.remove('page-turn-out-left', 'page-turn-out-right');
+                leftEl.classList.add(direction === 'next' ? 'page-turn-in-right' : 'page-turn-in-left');
+                setTimeout(() => {
+                    leftEl.classList.remove('page-turn-in-left', 'page-turn-in-right');
+                }, 300);
+            }, 200);
+        }
+
+        function nextSpread() {
+            if (isMobileView()) {
+                if (currentPage < flatPages.length - 1) {
+                    currentPage++;
+                    renderMobilePage('next');
+                }
+                return;
+            }
+            if (currentSpread < spreads.length - 1) {
+                currentSpread++;
+                renderSpread();
+            }
+        }
+
+        function prevSpread() {
+            if (isMobileView()) {
+                if (currentPage > 0) {
+                    currentPage--;
+                    renderMobilePage('prev');
+                }
+                return;
+            }
+            if (currentSpread > 0) {
+                currentSpread--;
+                renderSpread();
+            }
+        }
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                const diary = document.getElementById('diary-container');
+                if (!diary.classList.contains('visible')) return;
+                if (isMobileView()) {
+                    currentPage = Math.min(currentSpread * 2, flatPages.length - 1);
+                    renderMobilePage();
+                } else {
+                    currentSpread = Math.min(Math.floor(currentPage / 2), spreads.length - 1);
+                    renderSpread();
+                }
+            }, 200);
+        });
+    </script>
+</body>
+</html>
