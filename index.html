@@ -359,7 +359,9 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 10;
+            z-index: 50;
+            pointer-events: auto;
+            touch-action: manipulation;
             box-shadow: 0 2px 6px rgba(0,0,0,0.12);
             transition: transform 0.2s;
         }
@@ -964,6 +966,28 @@
                         <p class="letter-text diary-handwritten centered-title" style="margin-top: 100px; font-size: 1.5rem; border: none;">Wishing you the happiest 18th birthday, Mariyam!<br><br>May your year be filled with love, laughter, and endless pages of wonderful memories. 💖</p>
                     </div>
                 `
+            },
+            {
+                left: `
+                    <svg class="page-doodle heart" viewBox="0 0 50 50"><path d="M25,40 C25,40 10,25 10,15 C10,8 16,5 22,10 C25,13 25,13 28,10 C34,5 40,8 40,15 C40,25 25,40 25,40 Z" fill="#b08968"/></svg>
+                    <svg class="page-doodle flower" viewBox="0 0 50 50"><path d="M25,10 Q30,20 40,25 Q30,30 25,40 Q20,30 10,25 Q20,20 25,10 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">💌 Credits</h2>
+                        <p class="letter-text diary-handwritten centered-title" style="margin-top: 40px; border: none; line-height: 2.2rem;">This diary was lovingly put together by<br><br>
+                        Abdullah<br>
+                        Yumna<br>
+                        Muz<br>
+                        Abiha</p>
+                    </div>
+                `,
+                right: `
+                    <svg class="page-doodle stars" viewBox="0 0 50 50"><polygon points="25,5 30,18 45,18 32,26 37,40 25,30 13,40 18,26 5,18 20,18" fill="#b08968"/></svg>
+                    <svg class="page-doodle sparkle" viewBox="0 0 50 50"><path d="M25,5 L28,20 L43,25 L28,30 L25,45 L22,30 L7,25 L22,20 Z" fill="#b08968"/></svg>
+                    <div class="letter-content-wrap">
+                        <h2 class="centered-title">With Love</h2>
+                        <p class="letter-text diary-handwritten centered-title" style="margin-top: 100px; font-size: 1.3rem; border: none;">Made with love, for Mariyam's 18th birthday. 💖<br><br>Thank you for being you.</p>
+                    </div>
+                `
             }
         ];
 
@@ -995,11 +1019,8 @@
             const music = document.getElementById('bgMusic');
             if (music) {
                 music.volume = 0.5;
-                music.play().then(() => {
-                    document.getElementById('musicToggle').classList.add('playing');
-                    document.getElementById('musicToggle').setAttribute('aria-label', 'Pause music');
-                }).catch(() => {
-                    // Autoplay blocked — user can tap the music button to start it
+                music.play().catch(() => {
+                    // Autoplay blocked by the browser — tap the music button to start it
                 });
             }
 
@@ -1017,18 +1038,41 @@
 
         function toggleMusic() {
             const music = document.getElementById('bgMusic');
-            const btn = document.getElementById('musicToggle');
             if (!music) return;
             if (music.paused) {
-                music.play();
-                btn.classList.add('playing');
-                btn.setAttribute('aria-label', 'Pause music');
+                music.play().catch(() => {
+                    // If this fails, the file likely isn't reachable (e.g. song.mp3 missing)
+                });
             } else {
                 music.pause();
-                btn.classList.remove('playing');
-                btn.setAttribute('aria-label', 'Play music');
             }
         }
+
+        // Keep the button's icon/state in sync with what the audio element is
+        // actually doing, instead of guessing — this is what fixes cases where
+        // the button and playback state fall out of sync.
+        (function setupMusicButton() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicToggle');
+            if (!music || !btn) return;
+
+            const sync = () => {
+                if (music.paused) {
+                    btn.textContent = '▶';
+                    btn.classList.remove('playing');
+                    btn.setAttribute('aria-label', 'Play music');
+                } else {
+                    btn.textContent = '⏸';
+                    btn.classList.add('playing');
+                    btn.setAttribute('aria-label', 'Pause music');
+                }
+            };
+
+            music.addEventListener('play', sync);
+            music.addEventListener('pause', sync);
+            music.addEventListener('ended', sync);
+            sync();
+        })();
 
         function renderSpread() {
             const spread = spreads[currentSpread];
